@@ -8,4 +8,4 @@ src-link routing ../new/routing
 src-link telephony ../new/telephony
 #src-link diy ../new/diy
 src-git small https://github.com/kenzok8/small-package.git
-src-git small https://github.com/kenzok8/small.git
+#src-git small https://github.com/kenzok8/small.git
