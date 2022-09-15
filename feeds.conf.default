@@ -1,5 +1,5 @@
-src-git packages https://github.com/tiantianxiangshang2022/19.07.3-Warehouse/tree/packages
-src-git luci https://github.com/tiantianxiangshang2022/19.07.3-Warehouse/tree/luci
+src-git packages https://github.com/tiantianxiangshang2022/19.07.3-packages.git
+src-git luci https://github.com/tiantianxiangshang2022/19.07.3-luci.git
 src-git routing https://git.openwrt.org/feed/routing.git^3f8571194c2765ed31aa73459e86c2ebf943d27d
 src-git telephony https://git.openwrt.org/feed/telephony.git^036cd451c35b82b3d8cac519864986894d9f6958
 #src-git packages https://github.com/Tonkercke/packages.git
