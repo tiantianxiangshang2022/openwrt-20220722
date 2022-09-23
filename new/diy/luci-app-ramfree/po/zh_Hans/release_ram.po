@@ -1,0 +1,5 @@
+msgid ""
+msgstr ""
+
+msgid "Release Ram"
+msgstr "释放内存"

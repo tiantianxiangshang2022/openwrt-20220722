@@ -1,0 +1,20 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+/etc/init.d/tor stop
+test -e /etc/tor/torrc
+if [ "$?" == "0" ]; then
+    echo "" |tee /etc/tor/torrc
+    echo 'SocksPort 192.168.12.1:9150
+    HTTPSProxy 192.168.12.1:6789
+    GeoIPFile /usr/share/tor/geoip
+    GeoIPv6File /usr/share/tor/geoip6
+    GeoIPExcludeUnknown 1
+    StrictNodes 1
+    ExcludeNodes {cn},{hk},{mo},{sg},{th},{pk},{by},{ru},{ir},{vn},{ph},{my},{cu},{cl},{ci},{cr},{ee},{es},{gr},{il},{kz},{kw},{lk},{lt},{lv},{kp},{sy},{cu},{tw},{st},{ve},{eg},{kh},{la},{mm},{tr},{ua},{ye},{tk},{br},{pa},{lu},{do},{bf},{in},{id},{sv},{va},{??}
+    ExcludeExitNodes {cn},{hk},{mo},{sg},{th},{pk},{by},{ru},{ir},{vn},{ph},{my},{cu},{cl},{ci},{cr},{ee},{es},{gr},{il},{kz},{kw},{lk},{lt},{lv},{kp},{sy},{cu},{tw},{st},{ve},{eg},{kh},{la},{mm},{tr},{ua},{ye},{tk},{br},{pa},{lu},{do},{bf},{in},{id},{sv},{va},{??}
+    
+    StrictNodes 1
+    StrictExitNodes 1
+    ExitNodes {jp},{kr},{ca},{uk},{de},{fr},{fi},{ro},{se},{ch}' |tee -a /etc/tor/torrc
+fi
+exit 0

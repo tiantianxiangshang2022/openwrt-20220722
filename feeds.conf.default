@@ -1,0 +1,10 @@
+#src-git packages https://git.openwrt.org/feed/packages.git^ded142471e36831d2af63c7fe5062c4367f8ccd2
+src-link packages ../new/packages
+#src-git luci https://git.openwrt.org/project/luci.git^d24760e60a83b63f316c7b186e30636b5baa5481
+src-link luci ../new/luci
+#src-git routing https://git.openwrt.org/feed/routing.git^9e7698f20d1edf8f912fbce2f21400f3cc772b31
+src-link routing ../new/routing
+#src-git telephony https://git.openwrt.org/feed/telephony.git^ed2719867150a9bfc85bf41dff52ef8443820f2a
+src-link telephony ../new/telephony
+src-link diy ../new/diy
+src-git small https://github.com/kenzok8/small-package.git

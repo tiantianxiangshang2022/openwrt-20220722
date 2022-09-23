@@ -1,0 +1,54 @@
+From 81b340c30736551e9900d5411f6bee3c4a24a4a0 Mon Sep 17 00:00:00 2001
+From: guoguo <geekguo@example.com>
+Date: Sat, 18 Dec 2021 10:51:10 +0800
+Subject: [PATCH] arm add cmdline override
+
+---
+ arch/arm/Kconfig |  8 ++++++++
+ drivers/of/fdt.c | 11 +++++++++++
+ 2 files changed, 19 insertions(+)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 6fa5b4c8f..d6e5c00ac 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1829,6 +1829,14 @@ config ARM_ATAG_DTB_COMPAT_CMDLINE_EXTEND
+ 
+ endchoice
+ 
++config CMDLINE_OVERRIDE
++	bool "Use alternative cmdline from device tree"
++	help
++	  Some bootloaders may have uneditable bootargs. While CMDLINE_FORCE can
++	  be used, this is not a good option for kernels that are shared across
++	  devices. This setting enables using "chosen/cmdline-override" as the
++	  cmdline if it exists in the device tree.
++
+ config CMDLINE
+ 	string "Default kernel command string"
+ 	default ""
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 52e430d2b..1f58a09e4 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -1063,6 +1063,17 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
+ 	if (p != NULL && l > 0)
+ 		strlcat(data, p, min_t(int, strlen(data) + (int)l, COMMAND_LINE_SIZE));
+ 
++    /* CONFIG_CMDLINE_OVERRIDE is used to fallback to a different
++     * device tree option of chosen/bootargs-override. This is
++     * helpful on boards where u-boot sets bootargs, and is unable
++     * to be modified.
++     */
++#ifdef CONFIG_CMDLINE_OVERRIDE
++	p = of_get_flat_dt_prop(node, "bootargs-override", &l);
++	if (p != NULL && l > 0)
++		strlcpy(data, p, min((int)l, COMMAND_LINE_SIZE));
++#endif
++
+ 	/*
+ 	 * CONFIG_CMDLINE is meant to be a default in case nothing else
+ 	 * managed to set the command line, unless CONFIG_CMDLINE_FORCE
+-- 
+2.25.1
+

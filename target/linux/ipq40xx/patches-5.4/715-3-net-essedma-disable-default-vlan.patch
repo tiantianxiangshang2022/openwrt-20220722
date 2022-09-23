@@ -1,0 +1,63 @@
+From 88dff0581d8f775b8dd506058a56240821551a7d Mon Sep 17 00:00:00 2001
+From: goway <goway@home.net>
+Date: Sun, 7 Nov 2021 16:54:24 +0800
+Subject: [PATCH 3/3] net essedma disable default vlan
+
+
+diff --git a/arch/arm/boot/dts/qcom-ipq4019.dtsi b/arch/arm/boot/dts/qcom-ipq4019.dtsi
+index 79f2eba59..3c7b8fbc3 100644
+--- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
++++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
+@@ -666,7 +666,7 @@
+ 			qcom,rx_head_buf_size = <1540>;
+ 			qcom,mdio_supported;
+ 			qcom,poll_required = <1>;
+-			qcom,num_gmac = <2>;
++			qcom,num_gmac = <1>;
+ 			interrupts = <0  65 IRQ_TYPE_EDGE_RISING
+ 				      0  66 IRQ_TYPE_EDGE_RISING
+ 				      0  67 IRQ_TYPE_EDGE_RISING
+@@ -704,7 +704,7 @@
+ 
+ 			gmac0: gmac0 {
+ 				local-mac-address = [00 00 00 00 00 00];
+-				vlan_tag = <1 0x1f>;
++				vlan_tag = <1 0x3f>;
+ 			};
+ 
+ 			gmac1: gmac1 {
+diff --git a/drivers/net/ethernet/qualcomm/essedma/edma.c b/drivers/net/ethernet/qualcomm/essedma/edma.c
+index 0c06c6dcf..223f153d4 100644
+--- a/drivers/net/ethernet/qualcomm/essedma/edma.c
++++ b/drivers/net/ethernet/qualcomm/essedma/edma.c
+@@ -719,13 +719,11 @@ static u16 edma_rx_complete(struct edma_common_info *edma_cinfo,
+ 			edma_receive_checksum(rd, skb);
+ 
+ 			/* Process VLAN HW acceleration indication provided by HW */
+-			if (unlikely(adapter->default_vlan_tag != rd->rrd4)) {
+-				vlan = rd->rrd4;
+-				if (likely(rd->rrd7 & EDMA_RRD_CVLAN))
+-					__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vlan);
+-				else if (rd->rrd1 & EDMA_RRD_SVLAN)
+-					__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021AD), vlan);
+-			}
++			vlan = rd->rrd4;
++			if (likely(rd->rrd7 & EDMA_RRD_CVLAN))
++				__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vlan);
++			else if (rd->rrd1 & EDMA_RRD_SVLAN)
++				__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021AD), vlan);
+ 
+ 			/* Update rx statistics */
+ 			adapter->stats.rx_packets++;
+@@ -1405,8 +1403,6 @@ netdev_tx_t edma_xmit(struct sk_buff *skb,
+ 	/* Check and mark VLAN tag offload */
+ 	if (unlikely(skb_vlan_tag_present(skb)))
+ 		flags_transmit |= EDMA_VLAN_TX_TAG_INSERT_FLAG;
+-	else if (!adapter->edma_cinfo->is_single_phy && adapter->default_vlan_tag)
+-		flags_transmit |= EDMA_VLAN_TX_TAG_INSERT_DEFAULT_FLAG;
+ 
+ 	/* Check and mark checksum offload */
+ 	if (likely(skb->ip_summed == CHECKSUM_PARTIAL))
+-- 
+2.33.1
+
