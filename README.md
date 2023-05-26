@@ -48,7 +48,7 @@ make -j1 V=s
 二次编译：
 
 ```bash
-cd lede
+cd openwrt
 git pull
 ./scripts/feeds update -a
 ./scripts/feeds install -a
