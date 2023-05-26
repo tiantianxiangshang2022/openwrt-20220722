@@ -32,6 +32,24 @@ define Device/qnap_301w
 endef
 TARGET_DEVICES += qnap_301w
 
+define Device/xiaomi_ax3600
+    $(call Device/FitImage)
+    $(call Device/UbiFit)
+    DEVICE_VENDOR := Xiaomi
+    DEVICE_MODEL := AX3600
+    BLOCKSIZE := 128k
+    PAGESIZE := 2048
+    DEVICE_DTS_CONFIG := config@ac04
+    SOC := ipq8071
+    KERNEL_SIZE := 36608k
+    DEVICE_PACKAGES := ipq-wifi-xiaomi_ax3600 kmod-ath10k-ct-smallbuffers ath10k-firmware-qca9887-ct
+ifneq ($(CONFIG_TARGET_ROOTFS_INITRAMFS),)
+    ARTIFACTS := initramfs-factory.ubi
+    ARTIFACT/initramfs-factory.ubi := append-image-stage initramfs-uImage.itb | ubinize-kernel
+endif
+endef
+TARGET_DEVICES += xiaomi_ax3600
+
 define Device/zte_mf269
 	$(call Device/FitImage)
 	$(call Device/UbiFit)
