@@ -17,7 +17,7 @@ sudo apt install -y libelf-dev ecj fastjar java-propose-classpath bzip2 patch li
 
 **3 cd openwrt**
 
-**4 git clone https://github.com/Tonkercke/openwrt.git**
+**4 git clone https://github.com/tiantianxiangshang2022/openwrt-20220722.git**
 
 **5 cd openwrt**
 
