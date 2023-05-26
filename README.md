@@ -44,3 +44,23 @@ make menuconfig
 make download -j8
 make -j1 V=s
 ```
+
+二次编译：
+
+```bash
+cd lede
+git pull
+./scripts/feeds update -a
+./scripts/feeds install -a
+make defconfig
+make download -j8
+make V=s -j$(nproc)
+```
+
+如果需要重新配置：
+
+```bash
+rm -rf ./tmp && rm -rf .config
+make menuconfig
+make V=s -j$(nproc)
+```
