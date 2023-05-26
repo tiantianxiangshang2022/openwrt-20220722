@@ -4,7 +4,7 @@ Version:22.03-2023-0405
 
 Compilation steps:
 
-**1 Must be installed**
+**1 安装编译依赖**
 ```bash
 sudo apt update -y && sudo apt full-upgrade -y && 
 sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
@@ -16,18 +16,31 @@ libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo ugl
 vim wget xmlto xxd zlib1g-dev g++ 2to3 dh-python libfuse-dev file ecj java-propose-classpath lib32gcc-s1
 ```
 
-**2 mkdir openwrt**
+**2 创建工作目录**
+```bash
+mkdir openwrt
+```
 
-**3 cd openwrt**
-
-**4 git clone https://github.com/tiantianxiangshang2022/openwrt-20220722.git**
-
-**5 cd openwrt**
-
-**6 ./scripts/feeds update -a**
-
-**7 ./scripts/feeds install -a**
-
-**8 make menuconfig**
-
-**9 make -j1 V=s**
+**3 进入工作目录**
+```bash
+cd openwrt
+```
+**4 下载源代码**
+```bash
+git clone https://github.com/tiantianxiangshang2022/openwrt-20220722.git
+```
+**5 进入openwrt文件夹**
+```bash
+cd openwrt
+```
+**6 更新 feeds 并选择配置**
+```bash
+./scripts/feeds update -a
+./scripts/feeds install -a
+make menuconfig
+```
+**7 下载 dl 库，编译固件**
+```bash
+make download -j8
+make -j1 V=s
+```
