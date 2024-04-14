@@ -1,4 +1,4 @@
-![OpenWrt logo](include/logo.png)
+![OpenWrt logo](include/logo.png)21.02.1
 
 OpenWrt Project is a Linux operating system targeting embedded devices. Instead
 of trying to create a single, static firmware, OpenWrt provides a fully
